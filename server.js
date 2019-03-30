@@ -76,6 +76,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
 	if(!isSupportChannel(reaction.message)) return
 	if(user.id === bot.user.id) return
 	//console.log(`${user.username} reacted with "${reaction.emoji.name}".`)
+	console.log(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
 	reaction.message.channel.setName(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
 	reaction.message.delete()
 	
