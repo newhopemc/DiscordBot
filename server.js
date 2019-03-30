@@ -133,6 +133,15 @@ bot.on('message', message => {
 						}
 					)
 
+					// Binds admins to the channel too
+					channel.overwritePermissions(
+						guild.roles.find("name", "Adminisztrátor"),
+						{
+							"VIEW_CHANNEL": true,
+							"SEND_MESSAGES": true
+						}
+					)
+
 					channel.send("Üdvözöllek a **NewHope támogatás rendszerében**!")
 					channel.send("Kérlek írd le, hogy mi a problémád és az egyik adminisztrátor hamarosan válaszol!")
 					channel.send("Ha úgy érzed, hogy a problémád megoldódott írd be, hogy `!bezár` és a kövesd a bot utasításait!")
