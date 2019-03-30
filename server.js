@@ -90,7 +90,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
 
 bot.on('message', message => {
 	// #support channel
-	if(message.channel.id != 561486275048374272) return false;
+	if(message.channel.id != 561660773848449215) return false;
 	if(message.content.startsWith('!help') || message.content.startsWith('!segítség') || message.content.startsWith('!support')) {
 		var server = message.guild;
 		var channelId;
