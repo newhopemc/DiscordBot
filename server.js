@@ -50,7 +50,7 @@ bot.on('message', message => {
 					message.react("\u2705")
 					message.react("❌")
 				})
-			} else if(message.author.id != user){
+			} else if(message.author.id != user && message.author.id != bot.user.id){
 				console.log(user)
 				message.channel.setName(`❗-${message.channel.name.substr(1, message.channel.name.length)}`)
 			} else if(message.author.id == user){
