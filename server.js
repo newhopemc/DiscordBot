@@ -79,10 +79,10 @@ bot.on('messageReactionAdd', (reaction, user) => {
 	reaction.message.channel.setName(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
 	reaction.message.delete()
 	
-	reaction.channel.send("Örülünk, hogy segíthettünk neked!")
-	reaction.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
-	reaction.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
-	reaction.channel.send("További jó játékot kíván a **NewHope csapata**!")
+	reaction.message.channel.send("Örülünk, hogy segíthettünk neked!")
+	reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
+	reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
+	reaction.message.channel.send("További jó játékot kíván a **NewHope csapata**!")
 });
 
 bot.on('message', message => {
