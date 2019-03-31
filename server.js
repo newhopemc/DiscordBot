@@ -150,8 +150,6 @@ bot.on('message', message => {
 
 						}
 					)
-				})
-				.then(channel => {
 					
 					// Support category
 					let category = server.channels.find(c => c.name == "Support" && c.type == "category");
