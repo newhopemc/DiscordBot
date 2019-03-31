@@ -116,7 +116,7 @@ bot.on('message', message => {
 							"VIEW_CHANNEL": true,
 							"SEND_MESSAGES": true,
 							"ADD_REACTIONS": false,
-							"MANAGE_CHANNELS *": false
+							"MANAGE_CHANNELS": false
 						}
 					)
 
@@ -135,7 +135,7 @@ bot.on('message', message => {
 						{
 							"VIEW_CHANNEL": true,
 							"SEND_MESSAGES": true,
-							"MANAGE_CHANNELS *": true
+							"MANAGE_CHANNELS": true
 						}
 					)
 
@@ -146,7 +146,7 @@ bot.on('message', message => {
 							"VIEW_CHANNEL": true,
 							"SEND_MESSAGES": true,
 							"ADD_REACTIONS": true,
-							"MANAGE_CHANNELS *": true
+							"MANAGE_CHANNELS": true
 
 						}
 					)
