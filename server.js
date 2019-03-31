@@ -131,7 +131,7 @@ bot.on('message', message => {
 
 					// Binds admins to the channel too
 					channel.overwritePermissions(
-						guild.roles.find("name", "Adminisztrátor"),
+						channel.guild.roles.find("name", "Adminisztrátor"),
 						{
 							"VIEW_CHANNEL": true,
 							"SEND_MESSAGES": true,
@@ -141,7 +141,7 @@ bot.on('message', message => {
 
 					// Binds admins to the channel too
 					channel.overwritePermissions(
-						guild.roles.find("name", "HelpBot"),
+						channel.guild.roles.find("name", "HelpBot"),
 						{
 							"VIEW_CHANNEL": true,
 							"SEND_MESSAGES": true,
