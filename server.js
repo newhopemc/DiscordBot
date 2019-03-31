@@ -108,19 +108,15 @@ bot.on('message', message => {
 
 				var channelName = `❓-support-${channelId}`
 				server.createChannel(channelName, "text")
-				.then(channel => {
-					
-					// Support category
-					let category = server.channels.find(c => c.name == "Support" && c.type == "category");
-					if (!category) throw new Error("Category channel does not exist");
-					channel.setParent(category.id);
-
+				.then(function(){
 					// Give the permission to view and send for the user
 					channel.overwritePermissions(
 						message.author,
 						{
 							"VIEW_CHANNEL": true,
-							"SEND_MESSAGES": true 
+							"SEND_MESSAGES": true,
+							"ADD_REACTIONS": false,
+							"MANAGE_CHANNELS *": false
 						}
 					)
 
@@ -138,9 +134,29 @@ bot.on('message', message => {
 						guild.roles.find("name", "Adminisztrátor"),
 						{
 							"VIEW_CHANNEL": true,
-							"SEND_MESSAGES": true
+							"SEND_MESSAGES": true,
+							"MANAGE_CHANNELS *": true
 						}
 					)
+
+					// Binds admins to the channel too
+					channel.overwritePermissions(
+						guild.roles.find("name", "HelpBot"),
+						{
+							"VIEW_CHANNEL": true,
+							"SEND_MESSAGES": true,
+							"ADD_REACTIONS": true,
+							"MANAGE_CHANNELS *": true
+
+						}
+					)
+				})
+				.then(channel => {
+					
+					// Support category
+					let category = server.channels.find(c => c.name == "Support" && c.type == "category");
+					if (!category) throw new Error("Category channel does not exist");
+					channel.setParent(category.id);
 
 					channel.send("Üdvözöllek a **NewHope támogatás rendszerében**!")
 					channel.send("Kérlek írd le, hogy mi a problémád és az egyik adminisztrátor hamarosan válaszol!")
