@@ -108,7 +108,7 @@ bot.on('message', message => {
 
 				var channelName = `❓-support-${channelId}`
 				server.createChannel(channelName, "text")
-				.then(function(){
+				.then(channel => {
 					// Give the permission to view and send for the user
 					channel.overwritePermissions(
 						message.author,
