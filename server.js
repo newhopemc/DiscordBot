@@ -1,10 +1,8 @@
 // Dependencies
 const Discord = require('discord.js');
-const async = require('async');
 const http = require('http');
 const express = require('express');
 const app = express();
-var { XMLHttpRequest } = require("xmlhttprequest");
 var ms = require('./minestat');
 const fs = require('fs');
 
