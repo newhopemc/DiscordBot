@@ -233,5 +233,5 @@ function updateData(fileName, data, value){
 	})
 }
 
-console.log(`NewHope Discord bot.\nVersion: ${require('./package.json').version}`)
+console.log(`NewHope Discord bot\nVersion: ${require('./package.json').version}`)
 bot.login(process.env.TOKEN)
