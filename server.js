@@ -301,7 +301,7 @@ bot.on('message', message => {
 							result["reminders"] = []
 						}
 						result["reminders"].push(elem)
-						updateData("reminders.json", "reminders", result).then(function(){		
+						updateData("reminders.json", "reminders", result["reminders"]).then(function(){		
 							message.channel.send("**Új emlékeztető**", {
 								embed: {
 									author: {
@@ -350,11 +350,17 @@ setInterval(() => {
 	readFromFile("reminders.json").then(function(result){
 		for(var i = 0; i < result["reminders"].length; i++){
 			if(!result["reminders"][i]["reminded"]){
-				if(result["reminders"][i]["date"] < new Date() && result["reminders"][i]["date"] > new Date()-(5*60*1000)){
+				console.log("Reminded!")
+				if(new Date(result["reminders"][i]["date"]) < new Date() && new Date(result["reminders"][i]["date"]) > new Date()-(5*60*1000)){
 					result["reminders"][i]["reminded"] = true
 					updateData("reminders.json", "reminders", result["reminders"]).then(function(){
 						console.log(`Reminded: ${result["reminders"][i]["name"]}`)
+						bot.channels.get(result['reminders'][i]["channel"]).send(`**Esemény**\n\`${result['reminders'][i]['name']}\``)
 					})
+				} else {
+					console.log("Not in interval")
+
+					console.log(`${new Date(result["reminders"][i]["date"]).toString()} => ${new Date().toString()}, ${new Date()-(5*60*1000).toString()}`)
 				}
 			}
 		}
