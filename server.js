@@ -248,6 +248,18 @@ function updateData(fileName, data, value) {
 }
 
 bot.on('message', message => {
+	if(message.channel.id == 564563820341755925) return;
+	if(message.content.startsWith('!announce')){
+		var msg = message.content.replace('!announce ', "");
+		message.channel.send("A következő üzenet jó így?").then(function(message){
+			message.react("\u2705")
+			message.react("❌")
+		})
+		message.channel.send(msg)
+	}
+})
+
+bot.on('message', message => {
 	if (message.content.startsWith('!about') || message.content.startsWith('!rólunk')) {
 		message.channel.send("**Rólunk**", {
 			embed: {
