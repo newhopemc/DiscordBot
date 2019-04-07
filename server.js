@@ -269,7 +269,7 @@ bot.on('message', message => {
 		var msg = message.content.replace("!remind ", "").replace("!emlékeztess ", "").replace("!emlékeztető ", "");
 		if(msg != ""){
 			message.channel.send(`Írd be, hogy mikorra szeretnél létrehozni a emlékeztetőt a következő dologról: \`${msg}\``);
-			if(message.author.id != bot.id){
+			if(message.author.id != bot.user.id){
 				bot.on('message', message2 => {
 					if(message2.channel != message.channel) return;
 					message.channel.send("**Új emlékeztető**", {
