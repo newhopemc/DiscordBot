@@ -351,7 +351,7 @@ setInterval(() => {
 		for(var i = 0; i < result["reminders"].length; i++){
 			if(!result["reminders"][i]["reminded"]){
 				console.log("Reminded!")
-				if(new Date(new Date(result["reminders"][i]["date"])) < new Date() && new Date(result["reminders"][i]["date"]) > new Date()-(5*60*1000)){
+				if(new Date(result["reminders"][i]["date"]) < new Date() && new Date(result["reminders"][i]["date"]) > new Date()-(5*60*1000)){
 					result["reminders"][i]["reminded"] = true
 					updateData("reminders.json", "reminders", result["reminders"]).then(function(){
 						console.log(`Reminded: ${result["reminders"][i]["name"]}`)
@@ -360,7 +360,7 @@ setInterval(() => {
 				} else {
 					console.log("Not in interval")
 					
-					console.log(`${new Date(result["reminders"][i]["date"]).toString()} => ${new Date().toString()}, ${new Date()-(5*60*1000).toString()}`)
+					console.log(`${new Date(result["reminders"][i]["date"]).toString()} => ${new Date().toString()}, ${(new Date()-(5*60*1000)).toString()}`)
 				}
 			}
 		}
