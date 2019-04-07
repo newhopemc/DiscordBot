@@ -292,7 +292,9 @@ bot.on('message', message => {
 					readFromFile("reminders.json").then(function(result){
 						var elem = {
 							"name": msg,
-							"date": new Date(message2.content)
+							"date": new Date(message2.content),
+							"channel": message.channel.id,
+							"reminded": false
 						}
 						
 						if (result["reminders"] == undefined) {
@@ -303,16 +305,20 @@ bot.on('message', message => {
 							message.channel.send("**Új emlékeztető**", {
 								embed: {
 									author: {
-										name: msg,
-										url: "https://newhope.hu",
+										name: "",
+										url: "",
 										icon_url: ""
 									},
 									color: 5663164,
 									fields: [{
+										name: "Esemény neve",
+										value: msg,
+										inline: true
+									},{
 										name: "Időpont",
 										value: new Date(message2.content).toString(),
 										inline: true
-									},],
+									}],
 									thumbnail: {
 										url: ""
 									}
@@ -339,6 +345,21 @@ bot.on('message', message => {
 		})
 	}
 })
+
+setInterval(() => {
+	readFromFile("reminders.json").then(function(result){
+		for(var i = 0; i < result["reminders"].length; i++){
+			if(!result["reminders"][i]["reminded"]){
+				if(result["reminders"][i]["date"] < new Date() && result["reminders"][i]["date"] > new Date()-(5*60*1000)){
+					result["reminders"][i]["reminded"] = true
+					updateData("reminders.json", "reminders", result["reminders"]).then(function(){
+						console.log(`Reminded: ${result["reminders"][i]["name"]}`)
+					})
+				}
+			}
+		}
+	})
+}, 1000)
 
 console.log(`NewHope Discord bot\nVersion: ${require('./package.json').version}`)
 bot.login(process.env.TOKEN)
