@@ -364,7 +364,7 @@ setInterval(() => {
 				} else {
 					console.log("Not in interval")
 					
-					console.log(`${new Date(result["reminders"][i]["date"]).toString()} => ${new Date().toString()}, ${(dateOffset}`)
+					console.log(`${new Date(result["reminders"][i]["date"]).toString()} => ${new Date().toString()}, ${dateOffset}`)
 				}
 			}
 		}
