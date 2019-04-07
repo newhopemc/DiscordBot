@@ -265,10 +265,10 @@ bot.on('message', message => {
 });
 
 bot.on('message', message => {
-	if(message.startsWith('!remind') || message.startsWith('!emlékeztess') || message.startsWith('!emlékeztető')){
-		
+	if(message.content.startsWith('!remind') || message.content.startsWith('!emlékeztess') || message.content.startsWith('!emlékeztető')){
+
 	}
-	if(message.startsWith('!most')){
+	if(message.content.startsWith('!most')){
 		message.channel.send(new Date());
 	}
 })
