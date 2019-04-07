@@ -266,7 +266,31 @@ bot.on('message', message => {
 
 bot.on('message', message => {
 	if(message.content.startsWith('!remind') || message.content.startsWith('!emlékeztess') || message.content.startsWith('!emlékeztető')){
-
+		var msg = message.content.replace("!remind ", "").replace("!emlékeztess ", "").replace("!emlékeztető ", "");
+		if(msg != ""){
+			message.channel.send(`Írd be, hogy mikorra szeretnél létrehozni a emlékeztetőt a következő dologról: \`${msg}\``);
+			bot.on('message', message2 => {
+				if(message2.channel != message.channel) return;
+				message.channel.send("**Új emlékeztető**", {
+					embed: {
+						author: {
+						name: msg,
+						url: "https://newhope.hu",
+						icon_url: ""
+					  },
+					  color: 10181046,
+						fields: [{
+							name: "Időpont",
+							value: new Date(message2.content).toString(),
+							inline: true
+						},],
+						thumbnail: {
+						  url: ""
+					  }
+					}
+				})
+			})
+		}
 	}
 	if(message.content.startsWith('!most')){
 		message.channel.send(new Date().toString());
