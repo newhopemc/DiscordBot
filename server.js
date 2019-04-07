@@ -256,7 +256,7 @@ bot.on('message', message => {
 					url: "https://newhope.hu",
 					icon_url: bot.user.displayAvatarURL
 				},
-				color: 10181046,
+				color: 5663164,
 				fields: [{
 					name: "Felhasználónév",
 					value: bot.user.username,
@@ -307,7 +307,7 @@ bot.on('message', message => {
 										url: "https://newhope.hu",
 										icon_url: ""
 									},
-									color: 10181046,
+									color: 5663164,
 									fields: [{
 										name: "Időpont",
 										value: new Date(message2.content).toString(),
@@ -332,6 +332,11 @@ bot.on('message', message => {
 	}
 	if (message.content.startsWith('!toDate')) {
 		message.channel.send(new Date(message.content.replace("!toDate ", "")).toDateString())
+	}
+	if(message.content.startsWith('reminders')){
+		readFromFile('reminders.json').then(function(result){
+			message.channel.send(result)
+		})
 	}
 })
 
