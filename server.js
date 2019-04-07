@@ -233,5 +233,45 @@ function updateData(fileName, data, value){
 	})
 }
 
+bot.on('message', message => {
+	if(message.content.startsWith('!about') || message.content.startsWith('!rólunk')){
+		message.channel.send("**Rólunk**", {
+			embed: {
+				author: {
+				name: bot.user.username,
+				url: "https://newhope.hu",
+				icon_url: bot.user.displayAvatarURL
+			  },
+			  color: 10181046,
+				fields: [{
+					name: "Felhasználónév",
+					value: bot.user.username,
+					inline: true
+				},{
+					name: "Verzió",
+					value: "NewHope Bot v" + require('./package.json').version,
+					inline: true
+				},{
+					name: "Fejlesztő",
+					value: "Gál Péter (pepyta)",
+					inline: true
+				}],
+				thumbnail: {
+				  url: bot.user.displayAvatarURL
+			  }
+			}
+		})
+	}
+});
+
+bot.on('message', message => {
+	if(message.startsWith('!remind') || message.startsWith('!emlékeztess') || message.startsWith('!emlékeztető')){
+		
+	}
+	if(message.startsWith('!most')){
+		message.channel.send(new Date());
+	}
+})
+
 console.log(`NewHope Discord bot\nVersion: ${require('./package.json').version}`)
 bot.login(process.env.TOKEN)
