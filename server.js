@@ -269,7 +269,10 @@ bot.on('message', message => {
 
 	}
 	if(message.content.startsWith('!most')){
-		message.channel.send(new Date());
+		message.channel.send(new Date().toString());
+	}
+	if(message.content.startsWith('!toDate')){
+		message.channel.send(new Date(message.content.replace("!toDate ", "")).toDateString())
 	}
 })
 
