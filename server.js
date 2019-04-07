@@ -283,7 +283,7 @@ bot.on('message', message => {
 		var msg = message.content.replace("!remind ", "").replace("!emlékeztess ", "").replace("!emlékeztető ", "");
 		if (msg != "") {
 			message.channel.send(`Írd be, hogy mikorra szeretnél létrehozni a emlékeztetőt a következő dologról: \`${msg}\``);
-			message.channel.send(`${message.author.id} == ${bot.user.id}`)
+			//message.channel.send(`${message.author.id} == ${bot.user.id}`)
 			bot.on('message', message2 => {
 				if (message2.channel != message.channel) return;
 
@@ -294,7 +294,10 @@ bot.on('message', message => {
 							"name": msg,
 							"date": new Date(message2.content)
 						}
-						if(result["reminders"] == undefined) result["reminders"] = []
+						
+						if (result["reminders"] == undefined) {
+							result["reminders"] = []
+						}
 						result["reminders"].push(elem)
 						updateData("reminders.json", "reminders", result).then(function(){		
 							message.channel.send("**Új emlékeztető**", {
