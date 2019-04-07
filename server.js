@@ -294,7 +294,7 @@ bot.on('message', message => {
 							"name": msg,
 							"date": new Date(message2.content)
 						}
-
+						if(result["reminders"] == undefined) result["reminders"] = {}
 						result["reminders"].push(elem)
 						updateData("reminders.json", "reminders", result).then(function(){		
 							message.channel.send("**Új emlékeztető**", {
