@@ -22,49 +22,49 @@ setInterval(() => {
 // Get server status every 10 seconds
 setInterval(() => {
 	// play.newhope.hu(:25565)
-	ms.init('play.newhope.hu', 25565, function(result) {
+	ms.init('play.newhope.hu', 25565, function (result) {
 		//console.log("Minecraft server status of " + ms.address + " on port " + ms.port + ":");
-		if(ms.online) {
-			bot.user.setActivity(ms.current_players +"/"+ ms.max_players, { type: 'PLAYING' });
+		if (ms.online) {
+			bot.user.setActivity(ms.current_players + "/" + ms.max_players, { type: 'PLAYING' });
 			//console.log("Server is online running version " + ms.version + " with " + ms.current_players + " out of " + ms.max_players + " players.");
 			//console.log("Message of the day: " + ms.motd);
 			//console.log("Latency: " + ms.latency + "ms");
 		} else {
-			bot.user.setActivity("Offline", {type: 'WATCHING'});
+			bot.user.setActivity("Offline", { type: 'WATCHING' });
 		}
 	});
 }, 10000);
 
 bot.on('message', message => {
-	if(message.author.id === bot.user.id) return
-	if(isSupportChannel(message)){
+	if (message.author.id === bot.user.id) return
+	if (isSupportChannel(message)) {
 		var user;
-		getTicketAuthor(message).then(function(result, err){
-			if(err) reject(err)
+		getTicketAuthor(message).then(function (result, err) {
+			if (err) reject(err)
 			user = result
 
-			if(message.content.startsWith('!bezár')){
+			if (message.content.startsWith('!bezár')) {
 				message.channel.send("A hibajegy bezárásához kattints a `✔️` reakcióra, ha úgy érzed sikeresen megoldottuk a problmádat, ha pedig azt érzed nem sikerült kattints a `❌` gombra!").then(function (message) {
 					message.react("\u2705")
 					message.react("❌")
 				})
 				message.delete()
-			} else if(message.author.id != user && message.author.id != bot.user.id){
+			} else if (message.author.id != user && message.author.id != bot.user.id) {
 				//console.log(user)
 				message.channel.setName(`❗-${message.channel.name.substr(1, message.channel.name.length)}`)
-			} else if(message.author.id == user){
+			} else if (message.author.id == user) {
 				message.channel.setName(`❓-${message.channel.name.substr(1, message.channel.name.length)}`)
 			}
 		})
 	}
 });
 
-function getTicketAuthor(message){
-	return new Promise(function(resolve, reject){
-		readFromFile("datas.json").then(function(result, err){
-			if(err) reject(err)
-			result["support-channels"].forEach(function(elem){
-				if(elem["channelId"] == message.channel.id){
+function getTicketAuthor(message) {
+	return new Promise(function (resolve, reject) {
+		readFromFile("datas.json").then(function (result, err) {
+			if (err) reject(err)
+			result["support-channels"].forEach(function (elem) {
+				if (elem["channelId"] == message.channel.id) {
 					resolve(elem["user"])
 				}
 			})
@@ -73,13 +73,13 @@ function getTicketAuthor(message){
 }
 
 bot.on('messageReactionAdd', (reaction, user) => {
-	if(!isSupportChannel(reaction.message)) return
-	if(user.id === bot.user.id) return
+	if (!isSupportChannel(reaction.message)) return
+	if (user.id === bot.user.id) return
 	//console.log(`${user.username} reacted with "${reaction.emoji.name}".`)
 	//console.log(`${reaction.emoji}${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
 	reaction.message.channel.setName(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
 	reaction.message.delete()
-	
+
 	reaction.message.channel.send("Örülünk, hogy segíthettünk neked!")
 	reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
 	reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
@@ -87,13 +87,13 @@ bot.on('messageReactionAdd', (reaction, user) => {
 });
 
 bot.on('messageReactionAdd', (reaction, user) => {
-	if(!isSupportChannel(reaction.message)) return
-	if(user.id === bot.user.id) return
+	if (!isSupportChannel(reaction.message)) return
+	if (user.id === bot.user.id) return
 	//console.log(`${user.username} reacted with "${reaction.emoji.name}".`)
 	//console.log(`${reaction.emoji}${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
 	reaction.message.channel.setName(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
 	reaction.message.delete()
-	
+
 	reaction.message.channel.send("Örülünk, hogy segíthettünk neked!")
 	reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
 	reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
@@ -102,24 +102,24 @@ bot.on('messageReactionAdd', (reaction, user) => {
 
 bot.on('message', message => {
 	// #support channel
-	if(message.channel.id != 561660773848449215) return false;
-	if(message.content.startsWith('!help') || message.content.startsWith('!segítség') || message.content.startsWith('!support')) {
+	if (message.channel.id != 561660773848449215) return false;
+	if (message.content.startsWith('!help') || message.content.startsWith('!segítség') || message.content.startsWith('!support')) {
 		var server = message.guild;
 		var channelId;
-		readFromFile("datas.json").then(function(result){
-			if(result["support-channels"] != undefined){
+		readFromFile("datas.json").then(function (result) {
+			if (result["support-channels"] != undefined) {
 				channelId = result["support-channels"].length + 1
 			} else {
 				channelId = 1;
 			}
-				// Channel namings:
-				// ❓-support-## <= Newly created, not a single admin responded
-				// (⁉) ❗-support-## <= Responded admin, waiting for user
-				// ❌-support-## <= Can not be fixed
-				// ✔️-support-## <= Problem solved
+			// Channel namings:
+			// ❓-support-## <= Newly created, not a single admin responded
+			// (⁉) ❗-support-## <= Responded admin, waiting for user
+			// ❌-support-## <= Can not be fixed
+			// ✔️-support-## <= Problem solved
 
-				var channelName = `❓-support-${channelId}`
-				server.createChannel(channelName, "text")
+			var channelName = `❓-support-${channelId}`
+			server.createChannel(channelName, "text")
 				.then(channel => {
 					// Give the permission to view and send for the user
 					channel.overwritePermissions(
@@ -162,7 +162,7 @@ bot.on('message', message => {
 
 						}
 					)
-					
+
 					// Support category
 					let category = server.channels.find(c => c.name == "Support" && c.type == "category");
 					if (!category) throw new Error("Category channel does not exist");
@@ -171,40 +171,40 @@ bot.on('message', message => {
 					channel.send("Üdvözöllek a **NewHope támogatás rendszerében**!")
 					channel.send("Kérlek írd le, hogy mi a problémád és az egyik adminisztrátor hamarosan válaszol!")
 					channel.send("Ha úgy érzed, hogy a problémád megoldódott írd be, hogy `!bezár` és a kövesd a bot utasításait!")
-					
-					readFromFile("datas.json").then(function(result){
+
+					readFromFile("datas.json").then(function (result) {
 						var elem = {
 							"channelId": channel.id,
 							"user": message.author.id
 						}
-						if(result["support-channels"] == undefined){
+						if (result["support-channels"] == undefined) {
 							result["support-channels"] = []
 						}
-						
+
 						result["support-channels"].push(elem);
-						
-						updateData("datas.json", "support-channels", result["support-channels"]).then(function(result, err){
-							if(err) console.log(err)
+
+						updateData("datas.json", "support-channels", result["support-channels"]).then(function (result, err) {
+							if (err) console.log(err)
 							console.log(result)
 						})
 					})
 
-					message.author.send("A szobád sikeresen elkészült a `❓-support-"+channelId+"` néven!")
+					message.author.send("A szobád sikeresen elkészült a `❓-support-" + channelId + "` néven!")
 				}).catch(console.error);
-			
-				// Remove !help message
-				message.delete()
+
+			// Remove !help message
+			message.delete()
 		})
 	}
 });
 
-function isSupportChannel(message){
-	return new Promise(function(resolve, err){
+function isSupportChannel(message) {
+	return new Promise(function (resolve, err) {
 		var toReturn = false
-		readFromFile("datas.json").then(function(result, err){
-			if(err) reject(err)
-			result["support-channels"].forEach(function(elem){
-				if(elem["channelId"] == message.channel.id){
+		readFromFile("datas.json").then(function (result, err) {
+			if (err) reject(err)
+			result["support-channels"].forEach(function (elem) {
+				if (elem["channelId"] == message.channel.id) {
 					toReturn = true
 				}
 			})
@@ -213,10 +213,10 @@ function isSupportChannel(message){
 	})
 }
 
-function saveToFile(fileName, data){
-	return new Promise(function(resolve, reject){
-		fs.writeFile(fileName, JSON.stringify(data), function(result, err){
-			if(err) reject(err)
+function saveToFile(fileName, data) {
+	return new Promise(function (resolve, reject) {
+		fs.writeFile(fileName, JSON.stringify(data), function (result, err) {
+			if (err) reject(err)
 			resolve(result)
 		})
 	})
@@ -226,7 +226,7 @@ function readFromFile(file) {
 	return new Promise(function (resolve, reject) {
 		if (fs.existsSync(file)) {
 			fs.readFile(file, 'utf8', function (err, data) {
-				if(err) resolve({})
+				if (err) resolve({})
 				resolve(JSON.parse(data))
 			})
 		} else {
@@ -235,12 +235,12 @@ function readFromFile(file) {
 	})
 }
 
-function updateData(fileName, data, value){
+function updateData(fileName, data, value) {
 	return new Promise(function (resolve, reject) {
-		readFromFile(fileName).then(function(result){
+		readFromFile(fileName).then(function (result) {
 			result[data] = value
-			saveToFile(fileName, result).then(function(result, err){
-				if(err) reject(err)
+			saveToFile(fileName, result).then(function (result, err) {
+				if (err) reject(err)
 				resolve(result)
 			})
 		})
@@ -248,73 +248,86 @@ function updateData(fileName, data, value){
 }
 
 bot.on('message', message => {
-	if(message.content.startsWith('!about') || message.content.startsWith('!rólunk')){
+	if (message.content.startsWith('!about') || message.content.startsWith('!rólunk')) {
 		message.channel.send("**Rólunk**", {
 			embed: {
 				author: {
-				name: bot.user.username,
-				url: "https://newhope.hu",
-				icon_url: bot.user.displayAvatarURL
-			  },
-			  color: 10181046,
+					name: bot.user.username,
+					url: "https://newhope.hu",
+					icon_url: bot.user.displayAvatarURL
+				},
+				color: 10181046,
 				fields: [{
 					name: "Felhasználónév",
 					value: bot.user.username,
 					inline: true
-				},{
+				}, {
 					name: "Verzió",
 					value: "NewHope Bot v" + require('./package.json').version,
 					inline: true
-				},{
+				}, {
 					name: "Fejlesztő",
 					value: "Gál Péter (pepyta)",
 					inline: true
 				}],
 				thumbnail: {
-				  url: bot.user.displayAvatarURL
-			  }
+					url: bot.user.displayAvatarURL
+				}
 			}
 		})
 	}
 });
 
 bot.on('message', message => {
-	if(message.content.startsWith('!remind') || message.content.startsWith('!emlékeztess') || message.content.startsWith('!emlékeztető')){
+	if (message.content.startsWith('!remind') || message.content.startsWith('!emlékeztess') || message.content.startsWith('!emlékeztető')) {
 		var msg = message.content.replace("!remind ", "").replace("!emlékeztess ", "").replace("!emlékeztető ", "");
-		if(msg != ""){
+		if (msg != "") {
 			message.channel.send(`Írd be, hogy mikorra szeretnél létrehozni a emlékeztetőt a következő dologról: \`${msg}\``);
-				message.channel.send(`${message.author.id} == ${bot.user.id}`)
-				bot.on('message', message2 => {
-					if(message2.channel != message.channel) return;
-					
-					if(message2.author.id !== bot.user.id) {
-					message.channel.send("**Új emlékeztető**", {
-						embed: {
-							author: {
-							name: msg,
-							url: "https://newhope.hu",
-							icon_url: ""
-						},
-						color: 10181046,
-							fields: [{
-								name: "Időpont",
-								value: new Date(message2.content).toString(),
-								inline: true
-							},],
-							thumbnail: {
-							url: ""
+			message.channel.send(`${message.author.id} == ${bot.user.id}`)
+			bot.on('message', message2 => {
+				if (message2.channel != message.channel) return;
+
+				if (message2.author.id !== bot.user.id) {
+
+					readFromFile("reminders.json").then(function(result){
+						var elem = {
+							"name": msg,
+							"date": new Date(message2.content)
 						}
-						}
+
+						result["reminders"].push(elem)
+						updateData("reminders.json", "reminders", result).then(function(){		
+							message.channel.send("**Új emlékeztető**", {
+								embed: {
+									author: {
+										name: msg,
+										url: "https://newhope.hu",
+										icon_url: ""
+									},
+									color: 10181046,
+									fields: [{
+										name: "Időpont",
+										value: new Date(message2.content).toString(),
+										inline: true
+									},],
+									thumbnail: {
+										url: ""
+									}
+								}
+							})
+						})
 					})
 				}
-				})
-			
+
+				return;
+			})
+
 		}
 	}
-	if(message.content.startsWith('!most')){
+	if (message.content.startsWith('!most')) {
 		message.channel.send(new Date().toString());
 	}
-	if(message.content.startsWith('!toDate')){
+	if (message.content.startsWith('!toDate')) {
 		message.channel.send(new Date(message.content.replace("!toDate ", "")).toDateString())
 	}
 })
