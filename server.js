@@ -335,7 +335,7 @@ bot.on('message', message => {
 	}
 	if(message.content.startsWith('reminders')){
 		readFromFile('reminders.json').then(function(result){
-			message.channel.send(result)
+			message.channel.send(JSON.stringify(result))
 		})
 	}
 })
