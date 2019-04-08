@@ -326,6 +326,7 @@ bot.on('message', message => {
 					message.guild.createChannel(`társalgó`, "text")
 					.then(channel => {
 						channel.setParent(category.id)
+						channel.send(`Üdvözöllek a **saját szobádban**!\n\nEbben a szobában teljesen szabadon módosíthatod a beállításokat, kedved szerint némíthatsz el mást vagy törölhetsz üzenetet.\n\nAmennyiben meg szeretnél valakit hívni, azt a \`!meghív\` paranccsal tudod.\nHasználat: \`!meghív JátékosNév\`\n\nHa valakit nem látsz többet szívesen a \`!kirúg\` paranccsal tudod kitenni a szűrét.\nHasználat: \`!kirúg JátékosNév\``)
 						.then(function(){
 							message.guild.createChannel(`beszélgető`, "voice")
 							.then(voice => {
