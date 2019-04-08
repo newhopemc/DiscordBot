@@ -402,7 +402,7 @@ bot.on('message', message => {
 		
 		var username = message.content.replace('!meghív ')
 		if(username != ""){
-			let user = client.users.find(user => user.username == username)
+			let user = bot.users.find(user => user.username == username)
 
 			// Remove the permission from @everyone to view and send message
 			message.channel.parent.overwritePermissions(
