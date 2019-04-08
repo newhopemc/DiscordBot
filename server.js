@@ -422,6 +422,31 @@ bot.on('message', message => {
 	}
 })
 
+bot.on('message', message => {
+	if(message.content.startsWith('!kirúg')){
+		try {
+			var username = message.content.replace('!kirúg ', '')
+			if(username != ""){
+				let user = bot.users.find(user => user.username == username)
+
+				// Remove the permission from @everyone to view and send message
+				message.channel.parent.overwritePermissions(
+					user,
+					{
+						"VIEW_CHANNEL": false,
+						"SEND_MESSAGES": false
+					}
+				).then(function(result, err){
+					if(err) message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
+					else message.channel.send(`Sikeresen meghívtad a szobádba!`)
+				})
+			}
+		}
+		catch(err){console.log(err)}
+		message.delete()
+	}
+})
+
 /*
 bot.on('message', message => {
 	if (message.content.startsWith('!remind') || message.content.startsWith('!emlékeztess') || message.content.startsWith('!emlékeztető')) {
