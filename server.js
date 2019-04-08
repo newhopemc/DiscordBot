@@ -398,6 +398,7 @@ bot.on('message', message => {
 })
 
 bot.on('message', message => {
+	if(!isOwner(message.author, message.channel)) return;
 	if(message.content.startsWith('!meghív')){
 		try {
 			var username = message.content.replace('!meghív ', '')
@@ -423,6 +424,7 @@ bot.on('message', message => {
 })
 
 bot.on('message', message => {
+	if(!isOwner(message.author, message.channel)) return;
 	if(message.content.startsWith('!kirúg')){
 		try {
 			var username = message.content.replace('!kirúg ', '')
@@ -446,6 +448,23 @@ bot.on('message', message => {
 		message.delete()
 	}
 })
+
+function isOwner(user, channel){
+	return new Promise(function(resolve, reject){
+		readFromFile("rooms.json").then(function(result, err){
+			if(err) reject(err)
+			var owner = false;
+			result["rooms"].forEach(function(elem){
+				if(channel.parent.id == elem["channelId"]){
+					owner = true;
+				}
+			}, function(err){
+				if(err) reject(err)
+			})
+			resolve(owner)
+		})
+	})
+}
 
 /*
 bot.on('message', message => {
