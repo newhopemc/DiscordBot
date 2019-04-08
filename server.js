@@ -311,6 +311,9 @@ bot.on('message', message => {
 		var rendelkezik = false
 		message.delete()
 		readFromFile("rooms.json").then(function(result){
+			if(result["rooms"] == undefined){
+				result["rooms"] = []
+			}
 			result["rooms"].forEach(function(elem){
 				if(elem["user"] == message.author.id){
 					rendelkezik = true;
