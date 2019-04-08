@@ -295,6 +295,94 @@ bot.on('message', message => {
 	}
 })
 
+bot.on('messageReactionAdd', (reaction, user) => {
+	if(reaction.message.id == 564894152635056165){
+		var rendelkezik = false
+		readFromFile("rooms.json").then(function(result){
+			if(result["rooms"] == undefined){
+				result["rooms"] = []
+			}
+			result["rooms"].forEach(function(elem){
+				if(elem["user"] == message.author.id){
+					rendelkezik = true;
+				}
+			})
+			
+			if(!rendelkezik){
+				reaction.message.guild.createChannel(`${user.username} szobája`, "category")
+				.then(category => {
+					reaction.message.guild.createChannel(`társalgó`, "text")
+					.then(channel => {
+						channel.setParent(category.id)
+						channel.send(`Üdvözöllek a **saját szobádban**!\n\nEbben a szobában teljesen szabadon módosíthatod a beállításokat, kedved szerint némíthatsz el mást vagy törölhetsz üzenetet.\n\nAmennyiben meg szeretnél valakit hívni, azt a \`!meghív\` paranccsal tudod.\nHasználat: \`!meghív JátékosNév\`\n\nHa valakit nem látsz többet szívesen a \`!kirúg\` paranccsal tudod kitenni a szűrét.\nHasználat: \`!kirúg JátékosNév\``)
+						.then(function(){
+							reaction.message.guild.createChannel(`beszélgető`, "voice")
+							.then(voice => {
+								voice.setParent(category.id)
+								.then(function(){
+									// Give the permission to view and send for the user, and also managing his/her own category
+									category.overwritePermissions(
+										user,
+										{
+											"VIEW_CHANNEL": true,
+											"SEND_MESSAGES": true,
+											"ADD_REACTIONS": true,
+											"MANAGE_CHANNELS": true
+										}
+									)
+
+									// Remove the permission from @everyone to view and send message
+									category.overwritePermissions(
+										channel.guild.defaultRole,
+										{
+											"VIEW_CHANNEL": false,
+											"SEND_MESSAGES": false
+										}
+									)
+
+									// Binds admins to the channel too
+									category.overwritePermissions(
+										channel.guild.roles.find("name", "HelpBot"),
+										{
+											"VIEW_CHANNEL": true,
+											"SEND_MESSAGES": true,
+											"ADD_REACTIONS": true,
+											"MANAGE_CHANNELS": true
+
+										}
+									)
+
+									var elem = {
+										"user": user.id,
+										"category": category.id
+									}
+
+									if(result["rooms"] == undefined){
+										result["rooms"] = []
+									}
+									
+									result["rooms"].push(elem)
+
+									updateData("rooms.json", "rooms", result["rooms"])
+									
+									/*message.channel.send(`Sikeresen elkészült a szobád!`).then(function(msg){
+										setTimeout(function(){
+											msg.delete()
+										}, 1000*30)
+									})*/
+								})
+							})
+						})
+					})
+				})
+			} else {
+				user.send(`Már van neked egy saját szobád!`)
+			}
+		})
+	}
+	
+})
+
 bot.on('message', message => {
 	if(message.content.startsWith("!szoba")){
 		var rendelkezik = false
