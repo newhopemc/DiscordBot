@@ -365,6 +365,10 @@ bot.on('message', message => {
 										"category": category.id
 									}
 
+									if(result["rooms"] == undefined){
+										result["rooms"] = []
+									}
+									
 									result["rooms"].push(elem)
 
 									updateData("rooms.json", "rooms", result["rooms"]).then(function(){
