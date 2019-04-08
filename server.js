@@ -297,6 +297,7 @@ bot.on('message', message => {
 
 bot.on('messageReactionAdd', (reaction, user) => {
 	if(reaction.message.id == 564894152635056165){
+		console.log("Bent vagyunk!")
 		var rendelkezik = false
 		readFromFile("rooms.json").then(function(result){
 			if(result["rooms"] == undefined){
@@ -379,6 +380,8 @@ bot.on('messageReactionAdd', (reaction, user) => {
 				user.send(`Már van neked egy saját szobád!`)
 			}
 		})
+	} else {
+		console.log(reaction.message.id)
 	}
 	
 })
