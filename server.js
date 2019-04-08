@@ -198,12 +198,10 @@ function isSupportChannel(message) {
 			result["support-channels"].forEach(function (elem) {
 				if (elem["channelId"] == message.channel.id) {
 					toReturn = true
-				} else {
-					console.log(`${elem["channelId"]} => ${message.channel.id}`)
 				}
 			})
+			resolve(toReturn)
 		})
-		resolve(toReturn)
 	})
 }
 
