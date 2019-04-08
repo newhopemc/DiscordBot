@@ -76,31 +76,20 @@ function getTicketAuthor(message) {
 }
 
 bot.on('messageReactionAdd', (reaction, user) => {
-	if (!isSupportChannel(reaction.message)) return
 	if (user.id === bot.user.id) return
+	isSupportChannel(reaction.message).then(function(result){
+		if(result){
+			reaction.message.channel.setName(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
+			reaction.message.delete()
+		
+			reaction.message.channel.send("Örülünk, hogy segíthettünk neked!")
+			reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
+			reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
+			reaction.message.channel.send("További jó játékot kíván a **NewHope csapata**!")		
+		}
+	})
 	//console.log(`${user.username} reacted with "${reaction.emoji.name}".`)
 	//console.log(`${reaction.emoji}${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
-	reaction.message.channel.setName(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
-	reaction.message.delete()
-
-	reaction.message.channel.send("Örülünk, hogy segíthettünk neked!")
-	reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
-	reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
-	reaction.message.channel.send("További jó játékot kíván a **NewHope csapata**!")
-})
-
-bot.on('messageReactionAdd', (reaction, user) => {
-	if (!isSupportChannel(reaction.message)) return
-	if (user.id === bot.user.id) return
-	//console.log(`${user.username} reacted with "${reaction.emoji.name}".`)
-	//console.log(`${reaction.emoji}${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
-	reaction.message.channel.setName(`${reaction.emoji}-${reaction.message.channel.name.substr(1, reaction.message.channel.name.length)}`)
-	reaction.message.delete()
-
-	reaction.message.channel.send("Örülünk, hogy segíthettünk neked!")
-	reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
-	reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
-	reaction.message.channel.send("További jó játékot kíván a **NewHope csapata**!")
 })
 
 bot.on('message', message => {
