@@ -400,7 +400,7 @@ bot.on('message', message => {
 bot.on('message', message => {
 	if(message.content.startsWith('!meghív')){
 		
-		var username = message.content.replace('!meghív ')
+		var username = message.content.replace('!meghív ', '')
 		if(username != ""){
 			let user = bot.users.find(user => user.username == username)
 
