@@ -469,11 +469,13 @@ function isOwner(user, channel){
 		readFromFile("rooms.json").then(function(result, err){
 			if(err) reject(err)
 			var owner = false;
+			
+			console.log(result["rooms"])
 			if(result["rooms"] == undefined){
 				result["rooms"] = []
 			}
 			result["rooms"].forEach(function(elem){
-				if(channel.parent.id == elem["channelId"]){
+				if(channel.parent.id == elem["channelId"] && user.id == elem["user"]){
 					owner = true;
 				}
 			}, function(err){
