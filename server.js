@@ -366,7 +366,7 @@ setInterval(() => {
 				console.log("Reminded!")
 
 				var dateOffset = (24*60*60*1000) * 5; //5 days
-				var myDate = new Date(result["reminders"][i]["date"]);
+				var myDate = new Date(result["reminders"][i]["date"] - dateOffset);
 				myDate.setTime(myDate.getTime() - dateOffset);
 				if(new Date(result["reminders"][i]["date"]) < new Date() && new Date() > myDate){
 					result["reminders"][i]["reminded"] = true
