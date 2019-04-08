@@ -25,15 +25,17 @@ setInterval(() => {
 	ms.init('play.newhope.hu', 25565, function (result) {
 		//console.log("Minecraft server status of " + ms.address + " on port " + ms.port + ":");
 		if (ms.online) {
-			bot.channels.get("564761155411771411").setName(`️️${ms.current_players} játékos játszik.`)
+			bot.channels.get("564761155411771411").setName(`️️Online játékos: ${ms.current_players}`)
 			//bot.user.setActivity(ms.current_players + "/" + ms.max_players, { type: 'PLAYING' });
 			//console.log("Server is online running version " + ms.version + " with " + ms.current_players + " out of " + ms.max_players + " players.");
 			//console.log("Message of the day: " + ms.motd);
 			//console.log("Latency: " + ms.latency + "ms");
 		} else {
-			bot.channels.get("564761155411771411").setName("A szerver jelenleg offline!")
+			bot.channels.get("564761155411771411").setName("A szerver OFFLINE")
 		}
 	});
+
+	bot.channels.get("564839417408126986").setName(`Discord felhasználók: ${bot.channels.get("564761155411771411").guild.memberCount}`)
 }, 10000);
 
 bot.on('message', message => {
@@ -251,12 +253,25 @@ function updateData(fileName, data, value) {
 bot.on('message', message => {
 	if(message.channel.id == 564563820341755925) return;
 	if(message.content.startsWith('!announce')){
-		var msg = message.content.replace('!announce ', "");
-		message.channel.send("A következő üzenet jó így?").then(function(message){
-			message.react("\u2705")
-			message.react("❌")
+		var msg = message.content.replace('!announce ', "")
+		
+		message.channel.send(msg).then(function(msg2){
+			message.channel.send("A következő üzenet jó így?").then(function(message){
+				message.react("\u2705")
+				message.react("❌")
+			}).then(function(msg3){
+				message.delete();	
+						
+				bot.on('messageReactionAdd', (reaction, user) => {
+					if(reaction == "❌"){
+						msg2.delete();
+						msg3.delete();
+					} else {
+						
+					}
+				})
+			})
 		})
-		message.channel.send(msg)
 	}
 })
 
@@ -267,7 +282,7 @@ bot.on('message', message => {
 				author: {
 					name: bot.user.username,
 					url: "https://newhope.hu",
-					icon_url: bot.user.displayAvatarURL
+					icon_url: ""
 				},
 				color: 5663164,
 				fields: [{
@@ -289,8 +304,93 @@ bot.on('message', message => {
 			}
 		})
 	}
-});
+})
 
+bot.on('message', message => {
+	if(message.content.startsWith("!szoba")){
+		var rendelkezik = false
+		message.delete()
+		readFromFile("rooms.json").then(function(result){
+			result["rooms"].forEach(function(elem){
+				if(elem["user"] == message.author.id){
+					rendelkezik = true;
+				}
+			})
+			
+			if(!rendelkezik){
+				message.guild.createChannel(`${message.author.username} szobája`, "category")
+				.then(category => {
+					message.guild.createChannel(`társalgó`, "text")
+					.then(channel => {
+						channel.setParent(category.id)
+						.then(function(){
+							message.guild.createChannel(`beszélgető`, "voice")
+							.then(voice => {
+								voice.setParent(category.id)
+								.then(function(){
+									// Give the permission to view and send for the user, and also managing his/her own category
+									category.overwritePermissions(
+										message.author,
+										{
+											"VIEW_CHANNEL": true,
+											"SEND_MESSAGES": true,
+											"ADD_REACTIONS": true,
+											"MANAGE_CHANNELS": true
+										}
+									)
+
+									// Remove the permission from @everyone to view and send message
+									category.overwritePermissions(
+										channel.guild.defaultRole,
+										{
+											"VIEW_CHANNEL": false,
+											"SEND_MESSAGES": false
+										}
+									)
+
+									// Binds admins to the channel too
+									category.overwritePermissions(
+										channel.guild.roles.find("name", "HelpBot"),
+										{
+											"VIEW_CHANNEL": true,
+											"SEND_MESSAGES": true,
+											"ADD_REACTIONS": true,
+											"MANAGE_CHANNELS": true
+
+										}
+									)
+
+									var elem = {
+										"user": message.author.id,
+										"category": category.id
+									}
+
+									result["rooms"].push(elem)
+
+									updateData("rooms.json", "rooms", result["rooms"]).then(function(){
+										message.channel.send(`Sikeresen elkészült a szobád!`).then(function(msg){
+											setTimeout(function(){
+												msg.delete()
+											}, 1000*30)
+										})
+									})
+								})
+							})
+						})
+					})
+				})
+			} else {
+				message.channel.send(`Már van neked egy saját szobád!`).then(function(msg){
+					setTimeout(function(){
+						msg.delete()
+					}, 1000*30)
+				})
+			}
+		})
+	}
+})
+
+/*
 bot.on('message', message => {
 	if (message.content.startsWith('!remind') || message.content.startsWith('!emlékeztess') || message.content.startsWith('!emlékeztető')) {
 		var msg = message.content.replace("!remind ", "").replace("!emlékeztess ", "").replace("!emlékeztető ", "");
@@ -367,7 +467,16 @@ setInterval(() => {
 
 				var dateOffset = (24*60*60*1000) * 5; //5 days
 				var myDate = new Date(new Date(result["reminders"][i]["date"]).getTime() - dateOffset); 
-				if(new Date(result["reminders"][i]["date"]) < new Date() && new Date() > myDate){
+
+				var d = new Date(result["reminders"][i]["date"]);
+
+				console.log('Today is: ' + d.toLocaleString());
+				
+				d.setDate(d.getDate() - 5);
+				
+				console.log('<br>5 days ago was: ' + d.toLocaleString());
+
+				if(new Date(result["reminders"][i]["date"]) < new Date() && new Date() > d){
 					result["reminders"][i]["reminded"] = true
 					updateData("reminders.json", "reminders", result["reminders"]).then(function(){
 						console.log(`Reminded: ${result["reminders"][i]["name"]}`)
@@ -382,6 +491,7 @@ setInterval(() => {
 		}
 	})
 }, 1000)
+*/
 
 console.log(`NewHope Discord bot\nVersion: ${require('./package.json').version}`)
 bot.login(process.env.TOKEN)
