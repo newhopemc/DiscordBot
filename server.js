@@ -399,20 +399,25 @@ bot.on('message', message => {
 
 bot.on('message', message => {
 	if(message.content.startsWith('!meghív')){
-		
-		var username = message.content.replace('!meghív ', '')
-		if(username != ""){
-			let user = bot.users.find(user => user.username == username)
+		try {
+			var username = message.content.replace('!meghív ', '')
+			if(username != ""){
+				let user = bot.users.find(user => user.username == username)
 
-			// Remove the permission from @everyone to view and send message
-			message.channel.parent.overwritePermissions(
-				user,
-				{
-					"VIEW_CHANNEL": true,
-					"SEND_MESSAGES": true
-				}
-			)
+				// Remove the permission from @everyone to view and send message
+				message.channel.parent.overwritePermissions(
+					user,
+					{
+						"VIEW_CHANNEL": true,
+						"SEND_MESSAGES": true
+					}
+				).then(function(result, err){
+					if(err) message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
+					else message.channel.send(`Sikeresen meghívtad a szobádba!`)
+				})
+			}
 		}
+		catch(err){console.log(err)}
 		message.delete()
 	}
 })
