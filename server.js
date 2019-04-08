@@ -374,12 +374,11 @@ bot.on('message', message => {
 									
 									result["rooms"].push(elem)
 
-									updateData("rooms.json", "rooms", result["rooms"]).then(function(){
-										message.channel.send(`Sikeresen elkészült a szobád!`).then(function(msg){
-											setTimeout(function(){
-												msg.delete()
-											}, 1000*30)
-										})
+									updateData("rooms.json", "rooms", result["rooms"])
+									message.channel.send(`Sikeresen elkészült a szobád!`).then(function(msg){
+										setTimeout(function(){
+											msg.delete()
+										}, 1000*30)
 									})
 								})
 							})
