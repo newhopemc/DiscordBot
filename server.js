@@ -25,12 +25,13 @@ setInterval(() => {
 	ms.init('play.newhope.hu', 25565, function (result) {
 		//console.log("Minecraft server status of " + ms.address + " on port " + ms.port + ":");
 		if (ms.online) {
-			bot.user.setActivity(ms.current_players + "/" + ms.max_players, { type: 'PLAYING' });
+			bot.channels.get("564761155411771411").setName(`️️${ms.current_players} játékos játszik.`)
+			//bot.user.setActivity(ms.current_players + "/" + ms.max_players, { type: 'PLAYING' });
 			//console.log("Server is online running version " + ms.version + " with " + ms.current_players + " out of " + ms.max_players + " players.");
 			//console.log("Message of the day: " + ms.motd);
 			//console.log("Latency: " + ms.latency + "ms");
 		} else {
-			bot.user.setActivity("Offline", { type: 'WATCHING' });
+			bot.channels.get("564761155411771411").setName("A szerver jelenleg offline!")
 		}
 	});
 }, 10000);
@@ -365,9 +366,9 @@ setInterval(() => {
 				console.log("Reminded!")
 
 				var dateOffset = (24*60*60*1000) * 5; //5 days
-				var myDate = new Date();
+				var myDate = new Date(result["reminders"][i]["date"]);
 				myDate.setTime(myDate.getTime() - dateOffset);
-				if(new Date(result["reminders"][i]["date"]) < new Date() && new Date(result["reminders"][i]["date"]) > dateOffset){
+				if(new Date(result["reminders"][i]["date"]) < new Date() && new Date() > myDate){
 					result["reminders"][i]["reminded"] = true
 					updateData("reminders.json", "reminders", result["reminders"]).then(function(){
 						console.log(`Reminded: ${result["reminders"][i]["name"]}`)
@@ -376,7 +377,7 @@ setInterval(() => {
 				} else {
 					console.log("Not in interval")
 					
-					console.log(`${new Date(result["reminders"][i]["date"]).toString()} => ${new Date().toString()}, ${dateOffset}`)
+					console.log(`${new Date(result["reminders"][i]["date"]).toString()} => ${new Date().toString()}, ${myDate}`)
 				}
 			}
 		}
