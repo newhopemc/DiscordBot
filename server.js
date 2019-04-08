@@ -36,12 +36,12 @@ setInterval(() => {
 	});
 
 	bot.channels.get("564839417408126986").setName(`Discord felhasználók: ${bot.channels.get("564761155411771411").guild.memberCount}`)
-}, 10000);
+}, 10000)
 
 bot.on('message', message => {
 	if (message.author.id === bot.user.id) return
 	if (isSupportChannel(message)) {
-		var user;
+		var user
 		getTicketAuthor(message).then(function (result, err) {
 			if (err) reject(err)
 			user = result
@@ -60,7 +60,7 @@ bot.on('message', message => {
 			}
 		})
 	}
-});
+})
 
 function getTicketAuthor(message) {
 	return new Promise(function (resolve, reject) {
@@ -87,7 +87,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
 	reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
 	reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
 	reaction.message.channel.send("További jó játékot kíván a **NewHope csapata**!")
-});
+})
 
 bot.on('messageReactionAdd', (reaction, user) => {
 	if (!isSupportChannel(reaction.message)) return
@@ -101,7 +101,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
 	reaction.message.channel.send("Amennyiben bármilyen ezzel a problémával kapcsolatos gondod akadt nyugodtan írj ebbe a szobába!")
 	reaction.message.channel.send("Ha a hiba nem köthető ehhez, akkor kérlek ebben az esetben nyiss egy új szobát!")
 	reaction.message.channel.send("További jó játékot kíván a **NewHope csapata**!")
-});
+})
 
 bot.on('message', message => {
 	// #support channel
@@ -199,7 +199,7 @@ bot.on('message', message => {
 			message.delete()
 		})
 	}
-});
+})
 
 function isSupportChannel(message) {
 	return new Promise(function (resolve, err) {
@@ -251,7 +251,7 @@ function updateData(fileName, data, value) {
 }
 
 bot.on('message', message => {
-	if(message.channel.id == 564563820341755925) return;
+	if(message.channel.id == 564563820341755925) return
 	if(message.content.startsWith('!announce')){
 		var msg = message.content.replace('!announce ', "")
 		
@@ -394,6 +394,26 @@ bot.on('message', message => {
 				})
 			}
 		})
+	}
+})
+
+bot.on('message', message => {
+	if(message.content.startsWith('!meghív')){
+		
+		var username = message.content.replace('!meghív ')
+		if(username != ""){
+			let user = client.users.find(user => user.username == username)
+
+			// Remove the permission from @everyone to view and send message
+			message.channel.parent.overwritePermissions(
+				user,
+				{
+					"VIEW_CHANNEL": true,
+					"SEND_MESSAGES": true
+				}
+			)
+		}
+		message.delete()
 	}
 })
 
