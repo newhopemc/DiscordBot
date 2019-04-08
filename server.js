@@ -146,7 +146,7 @@ bot.on('message', message => {
 
 					// Binds admins to the channel too
 					channel.overwritePermissions(
-						channel.guild.roles.find("name", "Adminisztrátor"),
+						channel.guild.roles.find(user => user.name = "Adminisztrátor"),
 						{
 							"VIEW_CHANNEL": true,
 							"SEND_MESSAGES": true,
@@ -156,7 +156,7 @@ bot.on('message', message => {
 
 					// Binds admins to the channel too
 					channel.overwritePermissions(
-						channel.guild.roles.find("name", "HelpBot"),
+						channel.guild.roles.find(user => user.name = "HelpBot"),
 						{
 							"VIEW_CHANNEL": true,
 							"SEND_MESSAGES": true,
@@ -323,6 +323,7 @@ bot.on('message', message => {
 					message.guild.createChannel(`társalgó`, "text")
 					.then(channel => {
 						channel.setParent(category.id)
+						channel.send(`Üdvözöllek a **saját szobádban**!\n\nAmennyiben meg szeretnéd hívni a barátaidat, azt a \`!meghív\` paranccsal tudod tenni.\nHasználat: \`!meghív JátékosNév\``)
 						.then(function(){
 							message.guild.createChannel(`beszélgető`, "voice")
 							.then(voice => {
@@ -350,7 +351,7 @@ bot.on('message', message => {
 
 									// Binds admins to the channel too
 									category.overwritePermissions(
-										channel.guild.roles.find("name", "HelpBot"),
+										channel.guild.roles.find(user => user.name = "HelpBot"),
 										{
 											"VIEW_CHANNEL": true,
 											"SEND_MESSAGES": true,
@@ -368,7 +369,7 @@ bot.on('message', message => {
 									if(result["rooms"] == undefined){
 										result["rooms"] = []
 									}
-									
+
 									result["rooms"].push(elem)
 
 									updateData("rooms.json", "rooms", result["rooms"]).then(function(){
