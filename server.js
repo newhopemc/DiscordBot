@@ -456,11 +456,11 @@ bot.on('message', message => {
 					}
 				}
 				catch (err) { console.log(err) }
-				message.delete()
 			} else {
 				message.channel.send(`Nem te vagy a szoba főnöke!`)
 			}
 		})
+		message.delete()
 	}
 })
 
@@ -469,6 +469,9 @@ function isOwner(user, channel){
 		readFromFile("rooms.json").then(function(result, err){
 			if(err) reject(err)
 			var owner = false;
+			if(result["rooms"] == undefined){
+				result["rooms"] = []
+			}
 			result["rooms"].forEach(function(elem){
 				if(channel.parent.id == elem["channelId"]){
 					owner = true;
