@@ -398,54 +398,69 @@ bot.on('message', message => {
 })
 
 bot.on('message', message => {
-	if(!isOwner(message.author, message.channel)) return;
-	if(message.content.startsWith('!meghív')){
-		try {
-			var username = message.content.replace('!meghív ', '')
-			if(username != ""){
-				let user = bot.users.find(user => user.username == username)
+	if (message.content.startsWith('!meghív')) {
+		isOwner(message.author, message.channel).then(function (result) {
+			if (result) {
 
-				// Remove the permission from @everyone to view and send message
-				message.channel.parent.overwritePermissions(
-					user,
-					{
-						"VIEW_CHANNEL": true,
-						"SEND_MESSAGES": true
+				try {
+					var username = message.content.replace('!meghív ', '')
+					if (username != "") {
+						let user = bot.users.find(user => user.username == username)
+
+						// Remove the permission from @everyone to view and send message
+						message.channel.parent.overwritePermissions(
+							user,
+							{
+								"VIEW_CHANNEL": true,
+								"SEND_MESSAGES": true
+							}
+						).then(function (result, err) {
+							if (err) message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
+							else message.channel.send(`Sikeresen meghívtad a szobádba!`)
+						})
 					}
-				).then(function(result, err){
-					if(err) message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
-					else message.channel.send(`Sikeresen meghívtad a szobádba!`)
-				})
+				}
+				catch (err) { console.log(err) }
+				message.delete()
+
+			} else {
+				message.channel.send(`Nem te vagy a szoba főnöke!`)
 			}
-		}
-		catch(err){console.log(err)}
-		message.delete()
+		})
 	}
 })
 
 bot.on('message', message => {
-	if(!isOwner(message.author, message.channel)) return;
-	if(message.content.startsWith('!kirúg')){
-		try {
-			var username = message.content.replace('!kirúg ', '')
-			if(username != ""){
-				let user = bot.users.find(user => user.username == username)
+	if (message.content.startsWith('!kirúg')) {
+		isOwner(message.author, message.channel).then(function (result) {
+			if (result) {
+				try {
+					var username = message.content.replace('!kirúg ', '')
+					if (username != "") {
+						let user = bot.users.find(user => user.username == username)
 
-				// Remove the permission from @everyone to view and send message
-				message.channel.parent.overwritePermissions(
-					user,
-					{
-						"VIEW_CHANNEL": false,
-						"SEND_MESSAGES": false
+						// Remove the permission of the desired user
+						message.channel.parent.overwritePermissions(
+							user,
+							{
+								"VIEW_CHANNEL": false,
+								"SEND_MESSAGES": false
+							}
+						).then(function (result, err) {
+							if (err) {
+								message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
+							} else {
+								message.channel.send(`Sikeresen kirúgtad a szobából!`)
+							}
+						})
 					}
-				).then(function(result, err){
-					if(err) message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
-					else message.channel.send(`Sikeresen meghívtad a szobádba!`)
-				})
+				}
+				catch (err) { console.log(err) }
+				message.delete()
+			} else {
+				message.channel.send(`Nem te vagy a szoba főnöke!`)
 			}
-		}
-		catch(err){console.log(err)}
-		message.delete()
+		})
 	}
 })
 
