@@ -475,10 +475,10 @@ function isOwner(user, channel){
 				result["rooms"] = []
 			}
 			result["rooms"].forEach(function(elem){
-				if(channel.parent.id == elem["channelId"] && user.id == elem["user"]){
+				if(channel.parent.id == elem["category"] && user.id == elem["user"]){
 					owner = true;
 				} else {
-					console.log(`${channel.parent.id} => ${elem["channelId"]}`)
+					console.log(`${channel.parent.id} => ${elem["category"]}`)
 					console.log(`${user.id} => ${elem["user"]}`)
 				}
 			}, function(err){
