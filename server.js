@@ -495,12 +495,14 @@ bot.on('message', message => {
 								"SEND_MESSAGES": true
 							}
 						).then(function (result, err) {
-							if (err) message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
-							else message.channel.send(`Sikeresen meghívtad a szobádba!`)
+							message.channel.send(`Sikeresen meghívtad a szobádba!`)
 						})
 					}
 				}
-				catch (err) { console.log(err) }
+				catch (err) { 
+					console.log(err)
+					message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
+				}
 				message.delete()
 
 			} else {
@@ -527,15 +529,14 @@ bot.on('message', message => {
 								"SEND_MESSAGES": false
 							}
 						).then(function (result, err) {
-							if (err) {
-								message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
-							} else {
-								message.channel.send(`Sikeresen kirúgtad a szobából!`)
-							}
+							message.channel.send(`Sikeresen kirúgtad a szobából!`)
 						})
 					}
 				}
-				catch (err) { console.log(err) }
+				catch (err) { 
+					console.log(err)
+					message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
+				}
 			} else {
 				message.channel.send(`Nem te vagy a szoba főnöke!`)
 			}
