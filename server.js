@@ -496,12 +496,13 @@ bot.on('message', message => {
 							}
 						).then(function (result, err) {
 							message.channel.send(`Sikeresen meghívtad a szobádba!`)
+						}).catch(function(err){
+							message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
 						})
 					}
 				}
 				catch (err) { 
 					console.log(err)
-					message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
 				}
 				message.delete()
 
@@ -530,6 +531,8 @@ bot.on('message', message => {
 							}
 						).then(function (result, err) {
 							message.channel.send(`Sikeresen kirúgtad a szobából!`)
+						}).catch(function(err){
+							message.channel.send(`Sajnos nincs ${username} nevű felhasználó... Próbáld pontosabban!`)
 						})
 					}
 				}
