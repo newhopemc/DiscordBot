@@ -22,7 +22,7 @@ setInterval(() => {
 // Get server status every 10 seconds
 setInterval(() => {
 	// play.newhope.hu(:25565)
-	ms.init('play.newhope.hu', 25565, function (result) {
+	ms.init('s2.vgh.hu', 25636, function (result) {
 		//console.log("Minecraft server status of " + ms.address + " on port " + ms.port + ":");
 		if (ms.online) {
 			bot.channels.get("564761155411771411").setName(`️️Online játékos: ${ms.current_players}`)
