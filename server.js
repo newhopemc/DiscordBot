@@ -328,6 +328,27 @@ bot.on('messageReactionAdd', (reaction, user) => {
 											"VIEW_CHANNEL": true,
 											"SEND_MESSAGES": true,
 											"ADD_REACTIONS": true,
+											"MANAGE_CHANNELS": false
+										}
+									)
+
+									// instead giving it for only channels
+									channel.overwritePermissions(
+										user,
+										{
+											"VIEW_CHANNEL": true,
+											"SEND_MESSAGES": true,
+											"ADD_REACTIONS": true,
+											"MANAGE_CHANNELS": true
+										}
+									)
+
+									voice.overwritePermissions(
+										user,
+										{
+											"VIEW_CHANNEL": true,
+											"SEND_MESSAGES": true,
+											"ADD_REACTIONS": true,
 											"MANAGE_CHANNELS": true
 										}
 									)
