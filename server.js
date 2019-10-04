@@ -187,6 +187,9 @@ bot.on('message', message => {
 			// Remove !help message
 			message.delete()
 		})
+	} else {
+		message.author.send("Ebben a szobában új szobát tudsz létrehozni a `!segítség` paranccsal. Kérlek ne írj ide semmi mást!")
+		message.delete()
 	}
 })
 
