@@ -328,7 +328,8 @@ bot.on('messageReactionAdd', (reaction, user) => {
 											"VIEW_CHANNEL": true,
 											"SEND_MESSAGES": true,
 											"ADD_REACTIONS": true,
-											"MANAGE_CHANNELS": false
+											"MANAGE_CHANNELS": false,
+											"ATTACH_FILES": true
 										}
 									)
 
@@ -358,7 +359,8 @@ bot.on('messageReactionAdd', (reaction, user) => {
 										channel.guild.defaultRole,
 										{
 											"VIEW_CHANNEL": false,
-											"SEND_MESSAGES": false
+											"SEND_MESSAGES": false,
+											"ATTACH_FILES": true
 										}
 									)
 
